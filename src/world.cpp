@@ -26,3 +26,14 @@ int World::getWidth()
 {
     return width;
 }
+
+void World::randomFill()
+{
+    for (int x = 1; x < width - 1; x++)
+    {
+        for (int y = 1; y < height - 1; y++)
+        {
+            World_grid[x][y] = (rand() % 2) - 1;
+        }
+    }
+}

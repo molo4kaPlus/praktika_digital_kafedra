@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <random>
 
 #include "cell.hpp"
 
@@ -18,4 +19,5 @@ class World
         int getWidth();
         cell getCell(int p_x, int p_y);
         void setCell(int p_x, int p_y, cell p_cell);
+        void randomFill();
 };

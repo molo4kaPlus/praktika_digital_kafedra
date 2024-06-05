@@ -34,6 +34,17 @@ void game::init()
     world = new World(windowWidth/10, windowHeight/10);
 }
 
+void game::handleEvents(bool &gameRunning)
+{
+    while(SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+        {
+            gameRunning = false;
+        }
+    }
+}
+
 void game::update()
 {
     int i = 1;

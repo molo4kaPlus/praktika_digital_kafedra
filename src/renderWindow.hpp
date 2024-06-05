@@ -15,7 +15,7 @@ class RenderWindow
         void loadTextures(const char* p_img_directory);
         void clear();
         void render(entity& p_entity);
-        void renderWorld(world& p_world);
+        void renderWorld(World& p_world);
         void renderEntity(entity& p_entity);
         void celanUp();
     private:

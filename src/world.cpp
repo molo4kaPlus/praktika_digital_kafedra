@@ -1,28 +1,28 @@
 #include "world.hpp"
 
-world::world(unsigned int p_height, int p_width)
+World::World(unsigned int p_width, int p_height)
 {
     height = p_height;
     width = p_width;
-    world_grid = {p_height, vector<cell>(p_width, cell(0))};
+    World_grid = {p_width, vector<cell>(p_height, cell(0))};
 }
 
-cell world::getCell(int p_x, int p_y)
+cell World::getCell(int p_x, int p_y)
 {
-    return world_grid[p_x][p_y];
+    return World_grid[p_x][p_y];
 }
 
-void world::setCell(int p_x, int p_y, cell p_cell)
+void World::setCell(int p_x, int p_y, cell p_cell)
 {
-    world_grid[p_x][p_y] = p_cell;
+    World_grid[p_x][p_y] = p_cell;
 }
 
-int world::getHeight()
+int World::getHeight()
 {
     return height;
 }
 
-int world::getWidth()
+int World::getWidth()
 {
     return width;
 }

@@ -49,7 +49,7 @@ void RenderWindow::renderEntity(entity& p_entity)
 	SDL_RenderCopy(_renderer, p_entity.getTexture(), &src, &dst);
 }
 
-void RenderWindow::renderWorld(world& p_world)
+void RenderWindow::renderWorld(World& p_world)
 {
     SDL_Rect dst;
     dst.w = 10 * renderScale;

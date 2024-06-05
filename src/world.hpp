@@ -6,14 +6,14 @@
 
 using namespace std;
 
-class world
+class World
 {
     private:
         int height;
         int width;
-        vector<vector<cell>> world_grid;
+        vector<vector<cell>> World_grid;
     public:
-        world(unsigned int p_height, int p_width);
+        World(unsigned int p_width, int p_height);
         int getHeight();
         int getWidth();
         cell getCell(int p_x, int p_y);

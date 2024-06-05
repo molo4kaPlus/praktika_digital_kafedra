@@ -6,15 +6,20 @@ using namespace std;
 #include <SDL_image.h>
 
 #include "renderWindow.hpp"
+#include "world.hpp"
 
 class game
 {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
-        SDL_Texture* textures[10];
+        SDL_Texture* textures[2];
+        World* world;
+        int windowWidth, windowHeight;
+
     public:
-        game();
+        game(const char* p_title, int p_width, int p_height);
+        void init();
         void update();
         void render();
         void cleanUp();

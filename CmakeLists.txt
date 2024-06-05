@@ -1,0 +1,52 @@
+cmake_minimum_required(VERSION 3.21.0)
+project(ants VERSION 0.2.1 LANGUAGES C CXX)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin) 
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+set(SDL2_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/SDL2")
+set(SDL2_IMAGE_PATH "${CMAKE_CURRENT_LIST_DIR}/lib/SDL2_image")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIRS})
+
+set(sources
+    ${CMAKE_SOURCE_DIR}/src/renderWindow.hpp
+    ${CMAKE_SOURCE_DIR}/src/renderWindow.cpp
+    ${CMAKE_SOURCE_DIR}/src/entity.hpp
+    ${CMAKE_SOURCE_DIR}/src/entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/world.hpp
+    ${CMAKE_SOURCE_DIR}/src/world.cpp
+    ${CMAKE_SOURCE_DIR}/src/cell.cpp
+    ${CMAKE_SOURCE_DIR}/src/cell.hpp
+    ${CMAKE_SOURCE_DIR}/src/engine.cpp
+    ${CMAKE_SOURCE_DIR}/src/engine.hpp
+    )
+
+add_executable(ants ${CMAKE_SOURCE_DIR}/main.cpp ${sources})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES})
+
+add_custom_command(
+  TARGET ${PROJECT_NAME}  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2/lib/x64/SDL2.dll
+  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+  COMMENT "Copying SDL2.dll"
+)
+add_custom_command(
+  TARGET ${PROJECT_NAME}  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+  ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2_image/lib/x64/SDL2_image.dll
+  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+  COMMENT "Copying SDL2_image.dll"
+)
+
+add_custom_command(
+  TARGET ${PROJECT_NAME}  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_LIST_DIR}/res
+  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/res
+  COMMENT "Copying RES folder"
+)

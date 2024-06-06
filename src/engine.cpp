@@ -1,7 +1,7 @@
 #include "engine.hpp"
 
 game::game(const char* p_title, int p_width, int p_height)
-    :window(NULL), renderer(NULL)
+    :window(NULL), renderer(NULL), windowHeight(p_height), windowWidth(p_width)
 {
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_width, p_height, SDL_WINDOW_SHOWN);
     if (window == NULL)
@@ -29,9 +29,11 @@ void game::init()
     }
     cout << "Loaded " << texturesCount << " textures." << endl;
     
+    /// load level
+    level = new Level(0, windowWidth, windowHeight);
     /// creating world
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-    world0 = new World(windowWidth/10, windowHeight/10);
+    world0 = new World((windowWidth - windowWidth/8)/10, windowHeight/10);
     srand(time(NULL));
     world0->randomFill();
 }
@@ -49,7 +51,7 @@ void game::handleEvents(bool &gameRunning)
 
 void game::update()
 {
-    world1 = new World(windowWidth/10, windowHeight/10);
+    world1 = new World((windowWidth - windowWidth/8)/10, windowHeight/10);
     bool C, R, L, D, U, RU, LU, RD, LD;
     int count;
     for (int x = 1; x < world0->getWidth() - 1; x++)
@@ -74,14 +76,25 @@ void game::update()
     world0 = world1;
 }
 
+void renderRect(SDL_Renderer *renderer, Level *level, int i)
+{
+    SDL_SetRenderDrawColor(renderer, level->getColorFromVec(i).r, level->getColorFromVec(i).g, level->getColorFromVec(i).b, level->getColorFromVec(i).a);
+    SDL_RenderFillRect(renderer, &level->getRectFromVec(i));
+}
+
 void game::render()
 {
     SDL_RenderClear(renderer);
+
 
     SDL_Rect dst;
     dst.w = 10;
     dst.h = 10;
 
+    for(int i = 0; i < level->getRectCount(); i++)
+    {
+        renderRect(renderer, level, i);
+    }
     for (int i = 0; i < world0->getHeight(); i++)
     {
         for (int j = 0; j < world0->getWidth(); j++)

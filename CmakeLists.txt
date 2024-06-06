@@ -22,6 +22,8 @@ set(sources
     ${CMAKE_SOURCE_DIR}/src/cell.cpp
     ${CMAKE_SOURCE_DIR}/src/cell.hpp
     ${CMAKE_SOURCE_DIR}/src/engine.cpp
+    ${CMAKE_SOURCE_DIR}/src/level.cpp
+    ${CMAKE_SOURCE_DIR}/src/level.hpp
     ${CMAKE_SOURCE_DIR}/src/engine.hpp
     )
 

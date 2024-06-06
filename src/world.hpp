@@ -15,6 +15,7 @@ class World
         vector<vector<cell>> World_grid;
     public:
         World(unsigned int p_width, int p_height);
+        World();
         int getHeight();
         int getWidth();
         cell getCell(int p_x, int p_y);

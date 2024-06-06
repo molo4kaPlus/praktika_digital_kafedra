@@ -7,6 +7,7 @@ using namespace std;
 
 #include "renderWindow.hpp"
 #include "world.hpp"
+#include "level.hpp"
 
 class game
 {
@@ -15,7 +16,9 @@ class game
         SDL_Renderer* renderer;
         SDL_Texture* textures[10];
         SDL_Event event;
-        World* world;
+        Level* level;
+        World* world1;
+        World* world0;
         int windowWidth, windowHeight;
 
     public:

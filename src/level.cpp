@@ -31,7 +31,10 @@ Level::Level(int p_level, int p_windowX, int p_windowY)
         case 0: // main menu
         {
             pushPrimitive(&_rects, 0, 0, 0, 255, 0, 0, _windowX, _windowY, 0); // background
-            pushPrimitive(&_rects, 15, 15, 15, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY, 0); // right side bar
+            pushPrimitive(&_rects, 10, 10, 10, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY, 0); // right side bar
+            pushPrimitive(&_rects, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), 25, (_windowX/16) + _windowX/32, 50, 1); // start button
+            _rects[2].textButton = "Start";
+            break;
         }
     }
 };
@@ -49,4 +52,19 @@ SDL_Color& Level::getColorFromVec(int p_i)
 int Level::getRectCount()
 {
     return _rects.size();
+}
+
+int Level::getTypeFromVec(int p_i)
+{
+    return _rects[p_i].type;
+}
+
+string Level::getFontFileFromVec(int p_i)
+{
+    return _rects[p_i].fontPath;
+}
+
+string Level::getTextFromVec(int p_i)
+{
+    return _rects[p_i].textButton;
 }

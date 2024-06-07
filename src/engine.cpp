@@ -76,10 +76,46 @@ void game::update()
     world0 = world1;
 }
 
+SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
+        SDL_Color color, int fontSize, SDL_Renderer *renderer)
+{
+        //Открываем шрифт
+        TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);   
+        //Сначала нужно отобразить на поверхность с помощью TTF_RenderText,
+        //затем загрузить поверхность в текстуру
+        SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
+        //Очистка поверхности и шрифта
+        SDL_FreeSurface(surf);
+        TTF_CloseFont(font);
+        return texture;
+}
+
 void renderRect(SDL_Renderer *renderer, Level *level, int i)
 {
-    SDL_SetRenderDrawColor(renderer, level->getColorFromVec(i).r, level->getColorFromVec(i).g, level->getColorFromVec(i).b, level->getColorFromVec(i).a);
-    SDL_RenderFillRect(renderer, &level->getRectFromVec(i));
+    SDL_Color color = {level->getColorFromVec(i).r, level->getColorFromVec(i).g, level->getColorFromVec(i).b, level->getColorFromVec(i).a };
+    SDL_Rect rect = level->getRectFromVec(i);
+    switch (level->getTypeFromVec(i))
+    {
+        case 0: // plain
+        {
+            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            SDL_RenderFillRect(renderer, &level->getRectFromVec(i));
+            break;
+        }
+        case 1: // button
+        {
+            SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+            SDL_RenderFillRect(renderer, &level->getRectFromVec(i));
+            SDL_Texture* text = renderText(level->getTextFromVec(i), level->getFontFileFromVec(i), {255, 255, 255, 255}, 50, renderer);
+            rect.x = rect.x + rect.w * 0.10;
+            rect.y = rect.y + rect.h * 0.20;
+            rect.h = rect.h*0.80;
+            rect.w = rect.w*0.80;
+            SDL_RenderCopy(renderer, text, NULL, &rect);
+            break;
+        }
+    }
 }
 
 void game::render()

@@ -21,6 +21,7 @@ class game
         World* world1;
         World* world0;
         int windowWidth, windowHeight;
+        int _currentLevel;
 
     public:
         game(const char* p_title, int p_width, int p_height);

@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <queue>
+#include <iostream>
 
 #include "world.hpp"
 /*
@@ -18,6 +19,9 @@ struct UIprimitive
     bool pressed = false;
 };
 
+
+// 0 - main menu
+// 1 - game
 class Level
 {
     private:
@@ -28,11 +32,13 @@ class Level
         int _windowX;
         int _windowY;
     public:
-        Level(int p_level, int p_windowX, int p_windowY);
+        Level(int p_windowX, int p_windowY);
         int getButtonCount();
         int getPlainCount();
-        UIprimitive& getPlain(int p_i);
-        UIprimitive& getButton(int p_i);
+        UIprimitive* getPlain(int p_i);
+        UIprimitive* getButton(int p_i);
+        World* getWorld();
         void setColorFromVec(int p_i, int p_r, int p_g, int p_b, int p_a);
+        void updateWorld();
         void loadLevel(int levelID);
 };

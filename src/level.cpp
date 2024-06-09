@@ -37,26 +37,22 @@ void pushButton(vector<UIprimitive> *p_vector, int c_r, int c_g, int c_b, int c_
     p_vector->push_back(primitive);
 }
 
-Level::Level(int p_level, int p_windowX, int p_windowY)
-    :_windowX(p_windowX), _windowY(p_windowY)
+Level::Level(int p_windowX, int p_windowY)
+    :_windowX(p_windowX), _windowY(p_windowY), _world((p_windowX - p_windowX/8)/10, p_windowY/10)
 {
-    _level = p_level;
-    _world = {};
-    _plains = {};
-
-    switch (_level)
-    {
-        case 0: // main menu
-        {
-            pushPlain(&_plains, 0, 0, 0, 255, 0, 0, _windowX, _windowY); // background
-            pushPlain(&_plains, 10, 10, 10, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY); // right side bar
-            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/32, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Start"); // start button
-            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/8, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Settings"); // settings button
-            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY - _windowY/8 + _windowY/16, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Exit"); // exit button
-            break;
-        }
-    }
+    _level = 0;
+    _world.randomFill();
+    pushPlain(&_plains, 0, 0, 0, 255, 0, 0, _windowX, _windowY); // background
+    pushPlain(&_plains, 10, 10, 10, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY); // right side bar
+    pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/32, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Start"); // start button
+    pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/8, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Settings"); // settings button
+    pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY - _windowY/8 + _windowY/64, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Exit"); // exit button
 };
+
+void Level::loadLevel(int levelID)
+{
+    cout << "Loading level " << levelID << endl;
+}
 
 int Level::getPlainCount()
 {
@@ -68,12 +64,16 @@ int Level::getButtonCount()
     return _buttons.size();
 }
 
-UIprimitive& Level::getPlain(int p_i)
+UIprimitive* Level::getPlain(int p_i)
 {
-    return _plains[p_i];
+    return &_plains[p_i];
 }
 
-UIprimitive& Level::getButton(int p_i)
+UIprimitive* Level::getButton(int p_i)
 {
-    return _buttons[p_i];
+    return &_buttons[p_i];
+}
+World* Level::getWorld()
+{
+    return &_world;
 }

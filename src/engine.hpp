@@ -17,9 +17,7 @@ class game
         SDL_Renderer* renderer;
         SDL_Texture* textures[10];
         SDL_Event event;
-        Level* level;
-        World* world1;
-        World* world0;
+        Level level;
         int windowWidth, windowHeight;
         int _currentLevel;
 

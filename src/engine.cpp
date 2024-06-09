@@ -1,16 +1,18 @@
 #include "engine.hpp"
 
 int mouseX, mouseY;
-
+int g_windowWidth, g_windowHeight;
 
 enum string_code {
     eStart,
-    eSettings
+    eSettings,
+    eExit
 };
 
 string_code hashit (std::string const& inString) {
     if (inString == "Start") return eStart;
     if (inString == "Settings") return eSettings;
+    if (inString == "Exit") return eExit;
 }
 
 bool insideRect(SDL_Rect* rect, int x, int y)
@@ -93,26 +95,30 @@ void handleExit(SDL_Event &event, bool &gameRunning)
     }
 }
 
-void handleButtons(SDL_Event &event, int &currentLevel, Level &level)
+void handleButtons(SDL_Event &event, int &currentLevel, Level &level, bool &gameRunning)
 {
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
         for(int i = 0; i < level.getButtonCount(); i++){
-            switch (hashit(level.getButton(i).textButton))
+            switch (hashit(level.getButton(i)->textButton))
             {
                 case eStart:
                 {
-                    if (insideRect(&level.getButton(i).rect, mouseX, mouseY)){
-                        //level.loadLevel(1);
-                        cout << "jopa" << endl;}
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        level.loadLevel(1);}
                     break;
                 }
                 case eSettings:
                 {
-                    if (insideRect(&level.getButton(i).rect, mouseX, mouseY)){
-                        //level.loadLevel(1);
-                        cout << "govno" << endl;}
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        cout << "settings not implemented" << endl;}
                     break;
+                }
+                case eExit:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        gameRunning = false;
+                    }
                 }
             }
         }
@@ -120,7 +126,7 @@ void handleButtons(SDL_Event &event, int &currentLevel, Level &level)
 }
 
 game::game(const char* p_title, int p_width, int p_height)
-    :window(NULL), renderer(NULL), windowHeight(p_height), windowWidth(p_width)
+    :window(NULL), renderer(NULL), windowHeight(p_height), windowWidth(p_width), level(p_width, p_height)
 {
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_width, p_height, SDL_WINDOW_SHOWN);
     if (window == NULL)
@@ -134,6 +140,8 @@ game::game(const char* p_title, int p_width, int p_height)
 void game::init()
 {
     /// loading textures
+    g_windowHeight = windowHeight;
+    g_windowWidth = windowWidth;
     string texture_path;
     int texturesCount = 0;
     for(int i = 0; i < size(textures); i++)
@@ -148,14 +156,9 @@ void game::init()
     }
     cout << "Loaded " << texturesCount << " textures." << endl;
     
-    /// load level
-    _currentLevel = 0;
-    level = new Level(_currentLevel, windowWidth, windowHeight);
     /// creating world
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
-    world0 = new World((windowWidth - windowWidth/8)/10, windowHeight/10);
     srand(time(NULL));
-    world0->randomFill();
 }
 
 void game::handleEvents(bool &gameRunning)
@@ -164,35 +167,13 @@ void game::handleEvents(bool &gameRunning)
     while(SDL_PollEvent(&event))
     {
         handleExit(event, gameRunning);
-        handleButtons(event, _currentLevel, *level);
+        handleButtons(event, _currentLevel, level, gameRunning);
     }
 }
 
 void game::update()
 {
-    world1 = new World((windowWidth - windowWidth/8)/10, windowHeight/10);
-    bool C, R, L, D, U, RU, LU, RD, LD, flag;
-    int count;
-    for (int x = 1; x < world0->getWidth() - 1; x++)
-    {
-        for (int y = 1; y < world0->getHeight() - 1; y++)
-        {
-            U = world0->getCell(x, y + 1).getEntityID();
-            D = world0->getCell(x, y - 1).getEntityID();
-            R = world0->getCell(x + 1, y).getEntityID();
-            RU = world0->getCell(x + 1, y + 1).getEntityID();
-            RD = world0->getCell(x + 1, y - 1).getEntityID();
-            L = world0->getCell(x - 1, y).getEntityID();
-            LU = world0->getCell(x - 1, y + 1).getEntityID();
-            LD = world0->getCell(x - 1, y - 1).getEntityID();
-            count = R + RU + RD + L + LU + LD + D + U;
-            if ((count == 3) && (world0->getCell(x, y).getEntityID() == 0)) { world1->setCell(x, y, cell(1)); }
-            else if ((count == 3) && (world0->getCell(x, y).getEntityID() == 1)) { world1->setCell(x, y, cell(1)); }
-            else if ((count == 2) && (world0->getCell(x, y).getEntityID() == 1)) { world1->setCell(x, y, cell(1)); }
-            else { world1->setCell(x, y, cell(0)); }
-        }
-    }
-    world0 = world1;
+    level.getWorld()->update();
 }
 
 void game::render()
@@ -203,22 +184,23 @@ void game::render()
     SDL_Rect dst;
     dst.w = 10;
     dst.h = 10;
-    for(int i = 0; i < level->getPlainCount(); i++){
-        renderPlane(renderer, &level->getPlain(i));
+    for(int i = 0; i < level.getPlainCount(); i++){
+        renderPlane(renderer, level.getPlain(i));
     }
     
-    for(int i = 0; i < level->getButtonCount(); i++){
-        handleButtonColor(&level->getButton(i), mouseX, mouseY);
-        renderButton(renderer, &level->getButton(i));
+    for(int i = 0; i < level.getButtonCount(); i++){
+        handleButtonColor(level.getButton(i), mouseX, mouseY);
+        renderButton(renderer, level.getButton(i));
     }
 
-    for (int i = 0; i < world0->getHeight(); i++)
+    for (int i = 0; i < level.getWorld()->getHeight(); i++)
     {
-        for (int j = 0; j < world0->getWidth(); j++)
+        for (int j = 0; j < level.getWorld()->getWidth(); j++)
         {
             dst.x = 10 * j;
             dst.y = 10 * i;
-            SDL_RenderCopy(renderer, textures[world0->getCell(j,i).getEntityID()], NULL, &dst);
+            int id = level.getWorld()->getCell(j,i).getEntityID();
+            SDL_RenderCopy(renderer, textures[id], NULL, &dst);
         }
     }
 

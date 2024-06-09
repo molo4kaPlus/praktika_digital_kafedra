@@ -2,9 +2,10 @@
 
 World::World(unsigned int p_width, int p_height)
 {
-    height = p_height;
-    width = p_width;
-    World_grid = {p_width, vector<cell>(p_height, cell(0))};
+    height = p_height + 1;
+    width = p_width + 1;
+    World_grid = {p_width, vector<cell>(height, cell(0))};
+    World_1 = {p_width, vector<cell>(width, cell(0))};
 }
 
 World::World()
@@ -34,11 +35,11 @@ int World::getWidth()
 
 void World::randomFill()
 {
-    for (int x = 1; x < width - 1; x++)
+    for (int x = 0; x < width - 1; x++)
     {
-        for (int y = 1; y < height - 1; y++)
+        for (int y = 0; y < height - 1; y++)
         {
-            World_grid[x][y] = (rand() % 2) - 1;
+            World_grid[x][y] = cell((rand() % 2));
         }
     }
 }
@@ -46,7 +47,6 @@ void World::randomFill()
 void World::update()
 {
     bool C, R, L, D, U, RU, LU, RD, LD, flag;
-    World world(width, height);
     int count;
     for (int x = 1; x < World_grid.size() - 1; x++)
     {
@@ -61,17 +61,17 @@ void World::update()
             LU = World_grid[x-1][y+1].getEntityID();
             LD = World_grid[x-1][y-1].getEntityID();
             count = R + RU + RD + L + LU + LD + D + U;
-            if ((count == 3) && (World_grid[x][y].getEntityID() == 0)) { world.setCell(x, y, cell(1)); }
-            else if ((count == 3) && (World_grid[x][y].getEntityID() == 1)) { world.setCell(x, y, cell(1)); }
-            else if ((count == 2) && (World_grid[x][y].getEntityID() == 1)) { world.setCell(x, y, cell(1)); }
-            else { world.setCell(x, y, cell(0)); }
+            if ((count == 3) && (World_grid[x][y].getEntityID() == 0)) { World_1[x][y] = cell(1); }
+            else if ((count == 3) && (World_grid[x][y].getEntityID() == 1)) { World_1[x][y] = cell(1); }
+            else if ((count == 2) && (World_grid[x][y].getEntityID() == 1)) { World_1[x][y] = cell(1); }
+            else { World_1[x][y] = cell(0); }
         }
     }
     for (int x = 0; x < World_grid.size(); x++)
     {
-        for (int y = 0; y < World_grid[0].size(); y++)
+        for (int y = 0; y <  World_grid[0].size(); y++)
         {
-            World_grid[x][y] = world.getCell(x, y);
+            World_grid[x][y] = World_1[x][y];
         }
     }    
 }

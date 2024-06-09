@@ -193,9 +193,9 @@ void game::render()
         renderButton(renderer, level.getButton(i));
     }
 
-    for (int i = 0; i < level.getWorld()->getHeight(); i++)
+    for (int i = 0; i < level.getWorld()->getHeight() - 1; i++)
     {
-        for (int j = 0; j < level.getWorld()->getWidth(); j++)
+        for (int j = 0; j < level.getWorld()->getWidth() - 1; j++)
         {
             dst.x = 10 * j;
             dst.y = 10 * i;

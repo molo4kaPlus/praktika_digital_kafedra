@@ -13,6 +13,7 @@ class World
         int height;
         int width;
         vector<vector<cell>> World_grid;
+        vector<vector<cell>> World_1;
     public:
         World(unsigned int p_width, int p_height);
         World();

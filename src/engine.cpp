@@ -24,11 +24,11 @@ bool insideRect(SDL_Rect* rect, int x, int y)
     return false;
 }
 
-SDL_Texture* renderText(const std::string &message, const std::string &fontFile,
+SDL_Texture* renderText(const std::string &message, const std::string *fontFile,
         SDL_Color color, int fontSize, SDL_Renderer *renderer)
 {
         //Открываем шрифт
-        TTF_Font *font = TTF_OpenFont(fontFile.c_str(), fontSize);   
+        TTF_Font *font = TTF_OpenFont(fontFile->c_str(), fontSize);   
         //Сначала нужно отобразить на поверхность с помощью TTF_RenderText,
         //затем загрузить поверхность в текстуру
         SDL_Surface *surf = TTF_RenderText_Blended(font, message.c_str(), color);
@@ -75,7 +75,7 @@ void handleButtonColor(UIprimitive* p_button, int x, int y)
 void renderButton(SDL_Renderer *renderer, UIprimitive* p_button)
 {
     SDL_Color color = p_button->color;
-    SDL_Texture* text = renderText(p_button->textButton, p_button->fontPath, {255, 255, 255, 255}, 50, renderer);
+    SDL_Texture* text = renderText(p_button->textButton, &p_button->fontPath, {255, 255, 255, 255}, 50, renderer);
     SDL_Rect rect = p_button->rect;
     rect.x = rect.x + rect.w * 0.10;
     rect.y = rect.y + rect.h * 0.20;
@@ -85,6 +85,7 @@ void renderButton(SDL_Renderer *renderer, UIprimitive* p_button)
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(renderer, &p_button->rect);
     SDL_RenderCopy(renderer, text, NULL, &rect);
+    SDL_DestroyTexture(text);
 }
 
 void handleExit(SDL_Event &event, bool &gameRunning)
@@ -156,7 +157,7 @@ void game::init()
     }
     cout << "Loaded " << texturesCount << " textures." << endl;
     
-    /// creating world
+    
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
     srand(time(NULL));
 }

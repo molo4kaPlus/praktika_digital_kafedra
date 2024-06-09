@@ -15,13 +15,13 @@ int main(int argc, char ** args)
     game.init();
     while(gameRunning) 
     {
-        //Uint64 start = SDL_GetPerformanceCounter();
+        Uint64 start = SDL_GetPerformanceCounter();
         game.handleEvents(gameRunning);
         game.update();
         game.render();
-        //Uint64 end = SDL_GetPerformanceCounter();
-        //float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
-        //cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;
+        Uint64 end = SDL_GetPerformanceCounter();
+        float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
+        cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;
     }
     game.cleanUp();
     return 0;

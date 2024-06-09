@@ -8,11 +8,6 @@ World::World(unsigned int p_width, int p_height)
     World_1 = {p_width, vector<cell>(width, cell(0))};
 }
 
-World::World()
-{
-
-}
-
 cell World::getCell(int p_x, int p_y)
 {
     return World_grid[p_x][p_y];

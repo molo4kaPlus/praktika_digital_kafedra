@@ -51,7 +51,7 @@ Level::Level(int p_windowX, int p_windowY)
 
 void Level::loadLevel(int levelID)
 {
-    cout << "Loading level " << levelID << endl;
+    _world.randomFill();
 }
 
 int Level::getPlainCount()

@@ -70,3 +70,14 @@ void World::update()
         }
     }    
 }
+
+void World::erease()
+{
+    for (int x = 0; x < World_grid.size(); x++)
+    {
+        for (int y = 0; y < World_grid[0].size(); y++)
+        {
+            World_grid[x][y] = cell(0);
+        }
+    }
+}

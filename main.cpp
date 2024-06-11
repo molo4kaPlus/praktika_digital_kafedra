@@ -16,8 +16,8 @@ int main(int argc, char ** args)
     while(gameRunning) 
     {
         Uint64 start = SDL_GetPerformanceCounter();
-        game.handleEvents(gameRunning);
         game.update();
+        game.handleEvents(gameRunning);
         game.render();
         SDL_Delay(100);
         Uint64 end = SDL_GetPerformanceCounter();

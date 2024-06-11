@@ -23,4 +23,5 @@ class World
         void setCell(int p_x, int p_y, cell p_cell);
         void update();
         void randomFill();
+        void erease();
 };

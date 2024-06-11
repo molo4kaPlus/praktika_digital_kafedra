@@ -19,6 +19,7 @@ int main(int argc, char ** args)
         game.handleEvents(gameRunning);
         game.update();
         game.render();
+        SDL_Delay(100);
         Uint64 end = SDL_GetPerformanceCounter();
         float elapsed = (end - start) / (float)SDL_GetPerformanceFrequency();
         cout << "Current FPS: " << to_string(1.0f / elapsed) << endl;

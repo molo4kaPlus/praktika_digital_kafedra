@@ -15,10 +15,6 @@ find_package(SDL2_ttf REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
 
 set(sources
-    ${CMAKE_SOURCE_DIR}/src/renderWindow.hpp
-    ${CMAKE_SOURCE_DIR}/src/renderWindow.cpp
-    ${CMAKE_SOURCE_DIR}/src/entity.hpp
-    ${CMAKE_SOURCE_DIR}/src/entity.cpp
     ${CMAKE_SOURCE_DIR}/src/world.hpp
     ${CMAKE_SOURCE_DIR}/src/world.cpp
     ${CMAKE_SOURCE_DIR}/src/cell.cpp

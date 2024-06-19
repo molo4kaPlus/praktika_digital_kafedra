@@ -8,7 +8,7 @@ int main(int argc, char ** args)
     if (!(IMG_Init(IMG_INIT_PNG))) { cout << "IMG_init has failed. Error: " << SDL_GetError() << endl; }
     if ((TTF_Init() != 0)) { cout << "TTF_init has failed. Error: " << SDL_GetError() << endl; }
     
-    game game("game V0.0.3", 1280, 720);
+    game game("game V0.1.0", 1280, 720);
 
     bool gameRunning = true;
 

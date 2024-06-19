@@ -19,8 +19,7 @@ class game
         SDL_Event event;
         Level level;
         int windowWidth, windowHeight;
-        int _currentLevel;
-
+        int _currentPaintID;
     public:
         game(const char* p_title, int p_width, int p_height);
         void init();

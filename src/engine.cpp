@@ -2,10 +2,13 @@
 
 int mouseX, mouseY;
 int g_windowWidth, g_windowHeight;
+bool gamePaused = false;
 
 enum string_code {
     eStart,
     eSettings,
+    ePauseSim,
+    eUnPauseSim,
     eExit
 };
 
@@ -13,6 +16,8 @@ string_code hashit (std::string const& inString) {
     if (inString == "Start") return eStart;
     if (inString == "Settings") return eSettings;
     if (inString == "Exit") return eExit;
+    if (inString == "Pause") return ePauseSim;
+    if (inString == "Unpause") return eUnPauseSim;
 }
 
 bool insideRect(SDL_Rect* rect, int x, int y)
@@ -96,7 +101,7 @@ void handleExit(SDL_Event &event, bool &gameRunning)
     }
 }
 
-void handleButtons(SDL_Event &event, int &currentLevel, Level &level, bool &gameRunning)
+void handleButtons(SDL_Event &event, Level &level, bool &gameRunning)
 {
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
@@ -115,13 +120,43 @@ void handleButtons(SDL_Event &event, int &currentLevel, Level &level, bool &game
                         cout << "settings not implemented" << endl;}
                     break;
                 }
+                case ePauseSim:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        level.getButton(i)->textButton = "Unpause";
+                        gamePaused = true;}
+                    break;
+                }
+                case eUnPauseSim:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        level.getButton(i)->textButton = "Pause";
+                        gamePaused = false;}
+                    break;
+                }
                 case eExit:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
                         gameRunning = false;
                     }
+                    break;
                 }
             }
+        }
+    }
+}
+
+void checkCellInsertion(Level* level, int p_paintID, SDL_Event &event)
+{
+    if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON_LMASK)
+    {
+        if(mouseX < (g_windowWidth - g_windowWidth/8))
+        {
+            int cellPixelSizeX = g_windowWidth/level->getWorld()->getWidth() -1;
+            int cellPixelSizeY = g_windowHeight/level->getWorld()->getHeight() + 1;
+            int x = mouseX/cellPixelSizeX;
+            int y = mouseY/cellPixelSizeY;
+            level->getWorld()->setCell(x, y, cell(1));
         }
     }
 }
@@ -129,6 +164,7 @@ void handleButtons(SDL_Event &event, int &currentLevel, Level &level, bool &game
 game::game(const char* p_title, int p_width, int p_height)
     :window(NULL), renderer(NULL), windowHeight(p_height), windowWidth(p_width), level(p_width, p_height)
 {
+    _currentPaintID = 1;
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_width, p_height, SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
@@ -168,13 +204,17 @@ void game::handleEvents(bool &gameRunning)
     while(SDL_PollEvent(&event))
     {
         handleExit(event, gameRunning);
-        handleButtons(event, _currentLevel, level, gameRunning);
+        handleButtons(event, level, gameRunning);
+        checkCellInsertion(&level, _currentPaintID, event);
     }
 }
 
 void game::update()
 {
-    level.getWorld()->update();
+    if (!gamePaused)
+    {
+        level.getWorld()->update();
+    }
 }
 
 void game::render()

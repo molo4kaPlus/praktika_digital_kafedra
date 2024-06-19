@@ -55,15 +55,18 @@ void Level::loadLevel(int levelID)
         case 0 : // main menu
         {
             _world.randomFill();
-            pushPlain(&_plains, 0, 0, 0, 255, 0, 0, _windowX, _windowY); // background
             pushPlain(&_plains, 10, 10, 10, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY); // right side bar
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/32, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Start"); // start button
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/8, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Settings"); // settings button
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY - _windowY/8 + _windowY/64, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Exit"); // exit button
+            break;
         }
         case 1: // game itself
         {
-
+            pushPlain(&_plains, 10, 10, 10, 255, _windowX - (_windowX/8), 0, _windowX/8, _windowY); // right side bar
+            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY - _windowY/5, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Pause"); // exit button
+            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY - _windowY/8 + _windowY/64, (_windowX/16) + _windowX/32, _windowY/16 + _windowY/64, "Exit"); // exit button
+            break;
         }
     }
 

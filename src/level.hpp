@@ -35,6 +35,7 @@ class Level
         Level(int p_windowX, int p_windowY);
         int getButtonCount();
         int getPlainCount();
+        int currentLevel();
         UIprimitive* getPlain(int p_i);
         UIprimitive* getButton(int p_i);
         World* getWorld();

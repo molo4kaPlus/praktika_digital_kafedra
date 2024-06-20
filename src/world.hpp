@@ -21,7 +21,8 @@ class World
         int getWidth();
         cell getCell(int p_x, int p_y);
         void setCell(int p_x, int p_y, cell p_cell);
-        void update();
+        void updateMenu();
+        void updateGame();
         void randomFill();
         void erease();
 };

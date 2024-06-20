@@ -7,6 +7,7 @@ bool gamePaused = false;
 enum string_code {
     eStart,
     eSettings,
+    eMenu,
     ePauseSim,
     eUnPauseSim,
     eExit
@@ -18,6 +19,7 @@ string_code hashit (std::string const& inString) {
     if (inString == "Exit") return eExit;
     if (inString == "Pause") return ePauseSim;
     if (inString == "Unpause") return eUnPauseSim;
+    if (inString == "Menu") return eMenu;
 }
 
 bool insideRect(SDL_Rect* rect, int x, int y)
@@ -134,6 +136,13 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning)
                         gamePaused = false;}
                     break;
                 }
+                case eMenu:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        level.loadLevel(0);
+                        SDL_Delay(10);}
+                    break;
+                }
                 case eExit:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
@@ -213,7 +222,7 @@ void game::update()
 {
     if (!gamePaused)
     {
-        level.getWorld()->update();
+        level.updateWorld();
     }
 }
 

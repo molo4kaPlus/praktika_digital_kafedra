@@ -39,7 +39,7 @@ void World::randomFill()
     }
 }
 
-void World::update()
+void World::updateMenu()
 {
     bool C, R, L, D, U, RU, LU, RD, LD, flag;
     int count;
@@ -69,6 +69,39 @@ void World::update()
             World_grid[x][y] = World_1[x][y];
         }
     }    
+}
+
+void World::updateGame()
+{
+    bool C, R, L, D, U, RU, LU, RD, LD, flag;
+    int count;
+    for (int x = 1; x < World_grid.size() - 1; x++)
+    {
+        for (int y = 1; y < World_grid[0].size() - 1; y++)
+        {
+            switch(World_grid[x][y].getEntityID())
+            {
+                case 0: // empty space
+                {
+                    break;
+                }
+                case 1: // white dot without nothing
+                {
+                    World_1[x][y] = cell(1);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    for (int x = 0; x < World_grid.size(); x++)
+    {
+        for (int y = 0; y <  World_grid[0].size(); y++)
+        {
+            World_grid[x][y] = World_1[x][y];
+        }
+    }  
 }
 
 void World::erease()

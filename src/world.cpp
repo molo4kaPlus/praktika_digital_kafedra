@@ -90,6 +90,14 @@ void World::updateGame()
                     World_1[x][y] = cell(1);
                     break;
                 }
+                case 2: // sand
+                {
+                    if ((World_grid[x][y + 1].getEntityID() == 0 && (y < height - 3))){
+                        World_1[x][y + 1] = cell(2);
+                        World_1[x][y] = cell(0);}
+                    else { World_1[x][y] = cell(2); }
+                    break;
+                }
             }
         }
     }
@@ -111,6 +119,13 @@ void World::erease()
         for (int y = 0; y < World_grid[0].size(); y++)
         {
             World_grid[x][y] = cell(0);
+        }
+    }
+    for (int x = 0; x < World_1.size(); x++)
+    {
+        for (int y = 0; y < World_1[0].size(); y++)
+        {
+            World_1[x][y] = cell(0);
         }
     }
 }

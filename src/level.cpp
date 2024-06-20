@@ -38,7 +38,7 @@ void pushButton(vector<UIprimitive> *p_vector, int c_r, int c_g, int c_b, int c_
 }
 
 Level::Level(int p_windowX, int p_windowY)
-    :_windowX(p_windowX), _windowY(p_windowY), _world(((p_windowX - p_windowX/8)/10)+1, (p_windowY/10)+1)
+    :_windowX(p_windowX), _windowY(p_windowY), _world(((p_windowX - p_windowX/8)/5)+1, (p_windowY/5)+1)
 {
     loadLevel(0);
 };

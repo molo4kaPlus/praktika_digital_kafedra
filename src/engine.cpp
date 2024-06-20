@@ -161,11 +161,13 @@ void checkCellInsertion(Level* level, int p_paintID, SDL_Event &event)
     {
         if(mouseX < (g_windowWidth - g_windowWidth/8))
         {
-            int cellPixelSizeX = g_windowWidth/level->getWorld()->getWidth() -1;
+            int cellPixelSizeX = g_windowWidth/level->getWorld()->getWidth();
             int cellPixelSizeY = g_windowHeight/level->getWorld()->getHeight() + 1;
             int x = mouseX/cellPixelSizeX;
             int y = mouseY/cellPixelSizeY;
-            level->getWorld()->setCell(x, y, cell(1));
+            cout << cellPixelSizeX << endl;
+            cout << cellPixelSizeY << endl;
+            level->getWorld()->setCell(x, y, cell(p_paintID));
         }
     }
 }
@@ -173,14 +175,14 @@ void checkCellInsertion(Level* level, int p_paintID, SDL_Event &event)
 game::game(const char* p_title, int p_width, int p_height)
     :window(NULL), renderer(NULL), windowHeight(p_height), windowWidth(p_width), level(p_width, p_height)
 {
-    _currentPaintID = 1;
+    _currentPaintID = 2;
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_width, p_height, SDL_WINDOW_SHOWN);
     if (window == NULL)
     {
         std::cout << "Couldn't create window!" << std::endl;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
 void game::init()
@@ -232,8 +234,8 @@ void game::render()
 
 
     SDL_Rect dst;
-    dst.w = 10;
-    dst.h = 10;
+    dst.w = 5;
+    dst.h = 5;
     for(int i = 0; i < level.getPlainCount(); i++){
         renderPlane(renderer, level.getPlain(i));
     }
@@ -247,8 +249,8 @@ void game::render()
     {
         for (int j = 0; j < level.getWorld()->getWidth() - 1; j++)
         {
-            dst.x = 10 * j;
-            dst.y = 10 * i;
+            dst.x = 5 * j;
+            dst.y = 5 * i;
             int id = level.getWorld()->getCell(j,i).getEntityID();
             SDL_RenderCopy(renderer, textures[id], NULL, &dst);
         }

@@ -75,6 +75,8 @@ void World::updateGame()
 {
     bool C, R, L, D, U, RU, LU, RD, LD, flag;
     int count;
+    int flow = 0;
+    int remainingMass = 0;
     for (int x = 1; x < World_grid.size() - 1; x++)
     {
         for (int y = 1; y < World_grid[0].size() - 1; y++)
@@ -104,6 +106,50 @@ void World::updateGame()
                         World_1[x - 1][y + 1] = cell(2);
                         World_1[x][y] = cell(0);
                     }
+                    else if ((World_grid[x][y + 1].getEntityID() == 3 && (y < height - 3))){
+                        World_1[x][y + 1] = cell(2);
+                        World_1[x][y] = cell(3);
+                    }
+                    else if ((World_grid[x + 1][y + 1].getEntityID() == 3  && (y < height - 3))){
+                        World_1[x + 1][y + 1] = cell(2);
+                        World_1[x][y] = cell(3);
+                    }
+                    else if ((World_grid[x - 1][y + 1].getEntityID() == 3  && (y < height - 3))){
+                        World_1[x - 1][y + 1] = cell(2);
+                        World_1[x][y] = cell(3);
+                    }
+                    break;
+                }
+                case 3: // water
+                {
+                    if ((World_grid[x][y + 1].getEntityID() == 0 && (World_1[x][y + 1].getEntityID() == 0) && (y < height - 3))){
+                        World_1[x][y + 1] = cell(3);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x + 1][y + 1].getEntityID() == 0  && (World_1[x + 1][y + 1].getEntityID() == 0) && (y < height - 3))){
+                        World_1[x + 1][y + 1] = cell(3);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x - 1][y + 1].getEntityID() == 0  && (World_1[x - 1][y + 1].getEntityID() == 0) && (y < height - 3))){
+                        World_1[x - 1][y + 1] = cell(3);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if (rand() % 2 == 0)
+                    {
+                        if (World_grid[x + 1][y].getEntityID() == 0 && World_1[x + 1][y].getEntityID() == 0 && (y < height - 3)){
+                            World_1[x + 1][y] = cell(3);
+                            World_1[x][y] = cell(0);
+                        }
+                    }
+                    else if (World_grid[x - 1][y].getEntityID() == 0 && World_1[x - 1][y].getEntityID() == 0 && (y < height - 3)){
+                        World_1[x - 1][y] = cell(3);
+                        World_1[x][y] = cell(0);
+                    }
+                    break;
+                }
+                case 4: // wood
+                {
+                    World_1[x][y] = cell(4);
                     break;
                 }
             }

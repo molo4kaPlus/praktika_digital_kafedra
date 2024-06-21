@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <random>
+#include <iostream>
 
 #include "cell.hpp"
 

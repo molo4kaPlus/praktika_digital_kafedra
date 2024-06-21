@@ -11,6 +11,7 @@ enum string_code {
     ePauseSim,
     eUnPauseSim,
     eWATER,
+    eWOOD,
     eSAND,
     eXXX,
     eExit
@@ -23,6 +24,9 @@ string_code hashit (std::string const& inString) {
     if (inString == "Pause") return ePauseSim;
     if (inString == "Unpause") return eUnPauseSim;
     if (inString == "SAND") return eSAND;
+    if (inString == "WATER") return eWATER;
+    if (inString == "WOOD") return eWOOD;
+    if (inString == "XXX") return eXXX;
     if (inString == "Menu") return eMenu;
 }
 
@@ -146,10 +150,28 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning, int &tool)
                         level.loadLevel(0);}
                     break;
                 }
+                case eXXX:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 1;}
+                    break;
+                }
                 case eSAND:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
                         tool = 2;}
+                    break;
+                }
+                case eWATER:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 3;}
+                    break;
+                }
+                case eWOOD:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 4;}
                     break;
                 }
                 case eExit:
@@ -219,11 +241,11 @@ void game::init()
 void game::handleEvents(bool &gameRunning)
 {
     SDL_GetMouseState(&mouseX, &mouseY);
+    checkCellInsertion(&level, _currentPaintID, event);
     while(SDL_PollEvent(&event))
     {
         handleExit(event, gameRunning);
         handleButtons(event, level, gameRunning, _currentPaintID);
-        checkCellInsertion(&level, _currentPaintID, event);
     }
 }
 

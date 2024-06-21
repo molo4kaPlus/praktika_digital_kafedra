@@ -10,6 +10,9 @@ enum string_code {
     eMenu,
     ePauseSim,
     eUnPauseSim,
+    eWATER,
+    eSAND,
+    eXXX,
     eExit
 };
 
@@ -19,6 +22,7 @@ string_code hashit (std::string const& inString) {
     if (inString == "Exit") return eExit;
     if (inString == "Pause") return ePauseSim;
     if (inString == "Unpause") return eUnPauseSim;
+    if (inString == "SAND") return eSAND;
     if (inString == "Menu") return eMenu;
 }
 
@@ -103,7 +107,7 @@ void handleExit(SDL_Event &event, bool &gameRunning)
     }
 }
 
-void handleButtons(SDL_Event &event, Level &level, bool &gameRunning)
+void handleButtons(SDL_Event &event, Level &level, bool &gameRunning, int &tool)
 {
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
@@ -139,8 +143,13 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning)
                 case eMenu:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
-                        level.loadLevel(0);
-                        SDL_Delay(10);}
+                        level.loadLevel(0);}
+                    break;
+                }
+                case eSAND:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 2;}
                     break;
                 }
                 case eExit:
@@ -165,8 +174,6 @@ void checkCellInsertion(Level* level, int p_paintID, SDL_Event &event)
             int cellPixelSizeY = g_windowHeight/level->getWorld()->getHeight() + 1;
             int x = mouseX/cellPixelSizeX;
             int y = mouseY/cellPixelSizeY;
-            cout << cellPixelSizeX << endl;
-            cout << cellPixelSizeY << endl;
             level->getWorld()->setCell(x, y, cell(p_paintID));
         }
     }
@@ -215,7 +222,7 @@ void game::handleEvents(bool &gameRunning)
     while(SDL_PollEvent(&event))
     {
         handleExit(event, gameRunning);
-        handleButtons(event, level, gameRunning);
+        handleButtons(event, level, gameRunning, _currentPaintID);
         checkCellInsertion(&level, _currentPaintID, event);
     }
 }

@@ -94,8 +94,16 @@ void World::updateGame()
                 {
                     if ((World_grid[x][y + 1].getEntityID() == 0 && (y < height - 3))){
                         World_1[x][y + 1] = cell(2);
-                        World_1[x][y] = cell(0);}
-                    else { World_1[x][y] = cell(2); }
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x + 1][y + 1].getEntityID() == 0  && (y < height - 3))){
+                        World_1[x + 1][y + 1] = cell(2);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x - 1][y + 1].getEntityID() == 0  && (y < height - 3))){
+                        World_1[x - 1][y + 1] = cell(2);
+                        World_1[x][y] = cell(0);
+                    }
                     break;
                 }
             }

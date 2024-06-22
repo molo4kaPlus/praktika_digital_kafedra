@@ -152,6 +152,69 @@ void World::updateGame()
                     World_1[x][y] = cell(4);
                     break;
                 }
+                case 5: // fire
+                {
+                    World_grid[x][y].reduceLifeTime(1); 
+                    /*
+                    if (World_grid[x][y + 1].getEntityID() == 0 && (y < height - 3) && (World_grid[x][y].getlifeTime() % 2 == 0)){
+                        World_1[x][y] = cell(0);
+                        World_1[x][y+1] = World_grid[x][y];
+                    } 
+                    */ 
+                    if (World_grid[x][y].getlifeTime() % 120 == 0 && World_grid[x][y-1].getEntityID() == 0){
+                        World_1[x][y-1] = cell(6);
+                    }
+                    if (World_grid[x][y].getlifeTime() <= 0){
+                        World_1[x][y] = cell(6);
+                    }
+                    else if (World_grid[x + 1][y].getEntityID() == 3 || World_grid[x - 1][y].getEntityID() == 3 || World_grid[x][y + 1].getEntityID() == 3 || World_grid[x][y - 1].getEntityID() == 3){
+                        World_1[x][y] = cell(6);
+                    }   
+                    else { World_1[x][y] = World_grid[x][y]; }
+                    
+                    if (World_grid[x][y + 1].isFlamable()){
+                        if (rand() % 30 == 0) { World_1[x][y+1] = cell(5); World_1[x][y] = World_grid[x][y]; World_grid[x][y+1] = cell(5); }
+                    }   
+                    if (World_grid[x][y - 1].isFlamable()){
+                        if (rand() % 30 == 0) { World_1[x][y-1] = cell(5); World_1[x][y] = World_grid[x][y]; World_grid[x][y-1] = cell(5); }
+                    } 
+                    if (World_grid[x+1][y].isFlamable()){
+                        if (rand() % 30 == 0) { World_1[x+1][y] = cell(5); World_1[x][y] = World_grid[x][y]; World_grid[x+1][y] = cell(5); }
+                    }
+                    if (World_grid[x-1][y].isFlamable()){
+                        if (rand() % 30 == 0) { World_1[x-1][y] = cell(5); World_1[x][y] = World_grid[x][y]; World_grid[x-1][y] = cell(5); }
+                    }
+
+                    break;
+                }
+                case 6: // smoke
+                {
+                    if ((World_grid[x][y - 1].getEntityID() == 0)){
+                        World_1[x][y - 1] = cell(6);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x + 1][y - 1].getEntityID() == 0)){
+                        World_1[x + 1][y - 1] = cell(6);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x - 1][y - 1].getEntityID() == 0)){
+                        World_1[x - 1][y - 1] = cell(6);
+                        World_1[x][y] = cell(0);
+                    }
+                    else if ((World_grid[x][y - 1].getEntityID() == 3)){
+                        World_1[x][y - 1] = cell(6);
+                        World_1[x][y] = cell(3);
+                    }
+                    else if ((World_grid[x + 1][y - 1].getEntityID() == 3)){
+                        World_1[x + 1][y - 1] = cell(6);
+                        World_1[x][y] = cell(3);
+                    }
+                    else if ((World_grid[x - 1][y - 1].getEntityID() == 3  && (y < height - 3))){
+                        World_1[x - 1][y - 1] = cell(6);
+                        World_1[x][y] = cell(3);
+                    }
+                    break;
+                }
             }
         }
     }

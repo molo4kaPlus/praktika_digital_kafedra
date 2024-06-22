@@ -13,6 +13,8 @@ enum string_code {
     eWATER,
     eWOOD,
     eSAND,
+    eFIRE,
+    eSMOKE,
     eXXX,
     eExit
 };
@@ -26,6 +28,8 @@ string_code hashit (std::string const& inString) {
     if (inString == "SAND") return eSAND;
     if (inString == "WATER") return eWATER;
     if (inString == "WOOD") return eWOOD;
+    if (inString == "FIRE") return eFIRE;
+    if (inString == "SMOKE") return eSMOKE;
     if (inString == "XXX") return eXXX;
     if (inString == "Menu") return eMenu;
 }
@@ -168,6 +172,18 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning, int &tool)
                         tool = 3;}
                     break;
                 }
+                case eFIRE:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 5;}
+                    break;
+                }
+                case eSMOKE:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 6;}
+                    break;
+                }
                 case eWOOD:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
@@ -197,6 +213,10 @@ void checkCellInsertion(Level* level, int p_paintID, SDL_Event &event)
             int x = mouseX/cellPixelSizeX;
             int y = mouseY/cellPixelSizeY;
             level->getWorld()->setCell(x, y, cell(p_paintID));
+            level->getWorld()->setCell(x+1, y, cell(p_paintID));
+            level->getWorld()->setCell(x-1, y, cell(p_paintID));
+            level->getWorld()->setCell(x, y+1, cell(p_paintID));
+            level->getWorld()->setCell(x, y-1, cell(p_paintID));
         }
     }
 }

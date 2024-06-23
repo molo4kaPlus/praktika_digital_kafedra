@@ -15,6 +15,8 @@ enum string_code {
     eSAND,
     eFIRE,
     eSMOKE,
+    eSTEAM,
+    eSTEEL,
     eXXX,
     eExit
 };
@@ -30,6 +32,8 @@ string_code hashit (std::string const& inString) {
     if (inString == "WOOD") return eWOOD;
     if (inString == "FIRE") return eFIRE;
     if (inString == "SMOKE") return eSMOKE;
+    if (inString == "STEAM") return eSTEAM;
+    if (inString == "STEEL") return eSTEEL;
     if (inString == "XXX") return eXXX;
     if (inString == "Menu") return eMenu;
 }
@@ -172,6 +176,12 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning, int &tool)
                         tool = 3;}
                     break;
                 }
+                case eWOOD:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 4;}
+                    break;
+                }
                 case eFIRE:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
@@ -184,10 +194,16 @@ void handleButtons(SDL_Event &event, Level &level, bool &gameRunning, int &tool)
                         tool = 6;}
                     break;
                 }
-                case eWOOD:
+                case eSTEAM:
                 {
                     if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
-                        tool = 4;}
+                        tool = 7;}
+                    break;
+                }
+                case eSTEEL:
+                {
+                    if (insideRect(&level.getButton(i)->rect, mouseX, mouseY)){
+                        tool = 8;}
                     break;
                 }
                 case eExit:
@@ -271,6 +287,7 @@ void game::handleEvents(bool &gameRunning)
 
 void game::update()
 {
+    _currentTick += 1;
     if (!gamePaused)
     {
         level.updateWorld();
@@ -294,14 +311,19 @@ void game::render()
         renderButton(renderer, level.getButton(i));
     }
 
+    SDL_Color pixelColor;
     for (int i = 0; i < level.getWorld()->getHeight() - 1; i++)
     {
         for (int j = 0; j < level.getWorld()->getWidth() - 1; j++)
         {
             dst.x = 5 * j;
             dst.y = 5 * i;
+            pixelColor = level.getWorld()->getCell(j,i).getColor();
             int id = level.getWorld()->getCell(j,i).getEntityID();
-            SDL_RenderCopy(renderer, textures[id], NULL, &dst);
+
+            SDL_SetRenderDrawColor(renderer, pixelColor.r, pixelColor.g, pixelColor.b, pixelColor.a);
+            SDL_RenderFillRect(renderer, &dst);
+            //SDL_RenderCopy(renderer, textures[id], NULL, &dst);
         }
     }
 

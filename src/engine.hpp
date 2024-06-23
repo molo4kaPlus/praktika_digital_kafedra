@@ -20,6 +20,7 @@ class game
         Level level;
         int windowWidth, windowHeight;
         int _currentPaintID;
+        int _currentTick = 0;
     public:
         game(const char* p_title, int p_width, int p_height);
         void init();

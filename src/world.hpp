@@ -15,6 +15,7 @@ class World
         int width;
         vector<vector<cell>> World_grid;
         vector<vector<cell>> World_1;
+        vector<pair<int, int>> chekedPoints;
     public:
         World(unsigned int p_width, int p_height);
         World();

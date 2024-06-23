@@ -71,7 +71,9 @@ void Level::loadLevel(int levelID)
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/12, _windowX/24, _windowY/24, "FIRE"); // fire selection
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - (_windowX/17.7), _windowY/12, _windowX/24, _windowY/24, "WOOD"); // wood selection
             pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/7.3, _windowX/24, _windowY/24, "SMOKE"); // fire selection
-            pushButton(&_buttons, 40, 40, 40, 255, _windowX - (_windowX/17.7), _windowY/7.3, _windowX/24, _windowY/24, "WOOD"); // wood selection
+            pushButton(&_buttons, 40, 40, 40, 255, _windowX - (_windowX/17.7), _windowY/7.3, _windowX/24, _windowY/24, "STEAM"); // wood selection
+            pushButton(&_buttons, 40, 40, 40, 255, _windowX - ((_windowX/8) - _windowX/64), _windowY/5.3, _windowX/24, _windowY/24, "STEEL"); // fire selection
+            pushButton(&_buttons, 40, 40, 40, 255, _windowX - (_windowX/17.7), _windowY/5.3, _windowX/24, _windowY/24, "STEAM"); // wood selection
             break;
         }
     }
